@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, Filter } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -65,7 +64,7 @@ const Recipes = () => {
       difficulty: 'easy' as const,
       servings: 2,
       category: 'Pasta',
-      description: 'A bright and creamy pasta dish that's perfect for spring and summer. The lemon adds a refreshing twist to the rich sauce.',
+      description: 'A bright and creamy pasta dish that\'s perfect for spring and summer. The lemon adds a refreshing twist to the rich sauce.',
       chef: 'Chef Maria',
       ingredients: [
         { id: '1', name: 'spaghetti', amount: 8, unit: 'oz' },
@@ -219,7 +218,7 @@ const Recipes = () => {
       difficulty: 'medium' as const,
       servings: 8,
       category: 'Desserts',
-      description: 'A decadent and moist chocolate cake with rich chocolate ganache frosting that's perfect for special occasions.',
+      description: 'A decadent and moist chocolate cake with rich chocolate ganache frosting that\'s perfect for special occasions.',
       chef: 'Chef Sofia',
       ingredients: [
         { id: '1', name: 'all-purpose flour', amount: 2, unit: 'cups' },

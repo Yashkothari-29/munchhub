@@ -65,7 +65,7 @@ const Index = () => {
     {
       id: 'breakfast',
       name: 'Breakfast',
-      image: 'https://images.unsplash.com/photo-1533089860892-a9b9ac6e5815?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80',
+      image: 'https://th.bing.com/th/id/OIP.3f4uw03GjHN2wa2tSeNc4wHaIu?rs=1&pid=ImgDetMain',
       count: 24
     },
     {
