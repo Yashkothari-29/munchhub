@@ -18,8 +18,8 @@
 
     --primary: 24 95% 50%;
     --primary-foreground: 60 9.1% 97.8%;
-    --primary-rgb: 255, 159, 64; /* Added for particles */
-
+    --primary-rgb: 255, 159, 64; /* RGB for particles */
+    
     --secondary: 60 4.8% 95.9%;
     --secondary-foreground: 24 9.8% 10%;
 
@@ -28,6 +28,7 @@
 
     --accent: 125 55% 40%;
     --accent-foreground: 60 9.1% 97.8%;
+    --accent-rgb: 51, 153, 102; /* Added RGB for accent particles */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 60 9.1% 97.8%;
@@ -60,7 +61,7 @@
 
     --primary: 20.5 90.2% 48.2%;
     --primary-foreground: 60 9.1% 97.8%;
-    --primary-rgb: 240, 143, 73; /* Added for particles */
+    --primary-rgb: 240, 143, 73; /* RGB for particles */
 
     --secondary: 12 6.5% 15.1%;
     --secondary-foreground: 60 9.1% 97.8%;
@@ -70,6 +71,7 @@
 
     --accent: 125 55% 35%;
     --accent-foreground: 60 9.1% 97.8%;
+    --accent-rgb: 45, 136, 89; /* Added RGB for accent particles */
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 60 9.1% 97.8%;
