@@ -1,8 +1,10 @@
 
 import React, { useEffect, useRef } from 'react';
+import { useTheme } from './ThemeProvider';
 
 const BackgroundTexture: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { darkMode } = useTheme();
   
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -42,13 +44,17 @@ const BackgroundTexture: React.FC = () => {
           ? 'triangle' 
           : 'circle';
           
+      // Use different colors based on theme
+      const primaryColor = darkMode ? '240, 143, 73' : '255, 159, 64';
+      const accentColor = darkMode ? '45, 136, 89' : '51, 153, 102';
+      
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         size: Math.random() * 4 + 1.5, // Slightly larger particles
         speed: Math.random() * 0.8 + 0.2,
-        opacity: Math.random() * 0.6 + 0.2, // Increased opacity
-        color: Math.random() > 0.7 ? 'var(--accent-rgb)' : 'var(--primary-rgb)',
+        opacity: Math.random() * 0.6 + 0.4, // Increased opacity for dark mode
+        color: Math.random() > 0.7 ? accentColor : primaryColor,
         type,
         rotation: Math.random() * Math.PI * 2,
         rotationSpeed: (Math.random() - 0.5) * 0.01
@@ -116,13 +122,13 @@ const BackgroundTexture: React.FC = () => {
     return () => {
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, []);
+  }, [darkMode]); // Added darkMode as a dependency to re-render particles when theme changes
   
   return (
     <canvas 
       ref={canvasRef} 
       className="fixed inset-0 pointer-events-none z-0"
-      style={{ opacity: 0.4 }} // Increased opacity to make particles more visible
+      style={{ opacity: darkMode ? 0.5 : 0.4 }} // Slightly more opacity in dark mode
     />
   );
 };

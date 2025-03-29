@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider, useTheme } from "./components/ThemeProvider";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import BackgroundTexture from "./components/BackgroundTexture";
 
 // Pages
 import Index from "./pages/Index";
@@ -23,6 +24,7 @@ const AppContent = () => {
   
   return (
     <div className="flex flex-col min-h-screen">
+      <BackgroundTexture />
       <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       <main className="flex-1">
         <Routes>
