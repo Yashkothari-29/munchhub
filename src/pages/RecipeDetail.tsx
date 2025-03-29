@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Clock, Users, ChefHat, Printer, Share, ArrowLeft, Heart } from 'lucide-react';
@@ -10,17 +9,17 @@ import RecipeSteps, { Step } from '@/components/RecipeSteps';
 import Timer from '@/components/Timer';
 import { useToast } from '@/hooks/use-toast';
 
-interface RecipeDetailParams {
+type RecipeDetailParams = {
   id: string;
-}
+  [key: string]: string;
+};
 
 const RecipeDetail = () => {
-  const { id } = useParams<RecipeDetailParams>();
+  const { id } = useParams<keyof RecipeDetailParams>();
   const { toast } = useToast();
   const [isFavorite, setIsFavorite] = useState(false);
   
   useEffect(() => {
-    // Scroll to top when navigating to this page
     window.scrollTo(0, 0);
   }, []);
   
@@ -35,7 +34,6 @@ const RecipeDetail = () => {
   };
   
   const handleShare = () => {
-    // In a real app, this would use the Web Share API
     toast({
       title: "Share feature coming soon",
       description: "This feature will be available in the next update.",
@@ -49,7 +47,6 @@ const RecipeDetail = () => {
     });
   };
   
-  // For demo purposes, let's create a mock recipe based on the ID
   let recipe;
   
   if (id === 'shrimp-stir-fry') {
@@ -110,7 +107,6 @@ const RecipeDetail = () => {
       }
     };
   } else {
-    // Default recipe if ID doesn't match anything
     recipe = {
       title: 'Recipe Not Found',
       description: 'Sorry, we couldn\'t find the recipe you\'re looking for.',
@@ -135,7 +131,6 @@ const RecipeDetail = () => {
 
   return (
     <div className="pb-16">
-      {/* Hero Section */}
       <div className="relative h-[50vh] md:h-[60vh] overflow-hidden">
         <div className="absolute inset-0">
           <img 
@@ -157,7 +152,6 @@ const RecipeDetail = () => {
                 {recipe.difficulty.charAt(0).toUpperCase() + recipe.difficulty.slice(1)}
               </span>
               
-              {/* We'll add more tags in a real app */}
               <span className="bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-medium">
                 Seafood
               </span>
@@ -221,10 +215,8 @@ const RecipeDetail = () => {
         </div>
       </div>
       
-      {/* Recipe Content */}
       <div className="container mx-auto px-4 md:px-6 pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Ingredients & Timer */}
           <div className="lg:col-span-1 space-y-6">
             <IngredientList 
               ingredients={recipe.ingredients as Ingredient[]} 
@@ -233,7 +225,6 @@ const RecipeDetail = () => {
             
             <Timer defaultTime={180} />
             
-            {/* Nutrition Facts */}
             <div className="rounded-lg border bg-card p-4 shadow-sm">
               <h3 className="font-serif text-xl font-semibold mb-4">Nutrition Facts</h3>
               
@@ -262,14 +253,12 @@ const RecipeDetail = () => {
             </div>
           </div>
           
-          {/* Right Column - Instructions */}
           <div className="lg:col-span-2">
             <RecipeSteps steps={recipe.steps as Step[]} />
           </div>
         </div>
       </div>
       
-      {/* Mobile Timer Controls */}
       <Sheet>
         <SheetTrigger asChild>
           <Button 
