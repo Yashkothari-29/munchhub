@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Clock, Users, ChefHat, Printer, Share, ArrowLeft, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,17 +8,22 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import IngredientList, { Ingredient } from '@/components/IngredientList';
 import RecipeSteps, { Step } from '@/components/RecipeSteps';
 import Timer from '@/components/Timer';
+import PrintableRecipe from '@/components/PrintableRecipe';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 
 type RecipeDetailParams = {
   id: string;
-  [key: string]: string;
 };
 
 const RecipeDetail = () => {
-  const { id } = useParams<keyof RecipeDetailParams>();
+  const { id } = useParams<string>();
   const { toast } = useToast();
   const [isFavorite, setIsFavorite] = useState(false);
+  const [showPrintPreview, setShowPrintPreview] = useState(false);
+  const printableRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -41,10 +47,87 @@ const RecipeDetail = () => {
   };
   
   const handlePrint = () => {
-    toast({
-      title: "Print feature coming soon",
-      description: "The beautiful infographic print feature will be available in the next update.",
-    });
+    setShowPrintPreview(true);
+  };
+
+  const generatePDF = async () => {
+    if (!printableRef.current) return;
+    
+    try {
+      toast({
+        title: "Generating PDF",
+        description: "Please wait while we create your beautiful infographic...",
+      });
+      
+      const canvas = await html2canvas(printableRef.current, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      });
+      
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+      });
+      
+      const imgWidth = 210;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      
+      pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+      pdf.save(`${recipe.title.replace(/\s+/g, '-').toLowerCase()}.pdf`);
+      
+      toast({
+        title: "PDF Generated!",
+        description: "Your recipe infographic has been created successfully.",
+      });
+      
+      setShowPrintPreview(false);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      toast({
+        title: "Error",
+        description: "Failed to generate PDF. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const downloadImage = async () => {
+    if (!printableRef.current) return;
+    
+    try {
+      toast({
+        title: "Generating Image",
+        description: "Please wait while we create your beautiful infographic...",
+      });
+      
+      const canvas = await html2canvas(printableRef.current, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      });
+      
+      const link = document.createElement('a');
+      link.download = `${recipe.title.replace(/\s+/g, '-').toLowerCase()}.jpg`;
+      link.href = canvas.toDataURL('image/jpeg', 0.8);
+      link.click();
+      
+      toast({
+        title: "Image Downloaded!",
+        description: "Your recipe infographic has been created successfully.",
+      });
+      
+      setShowPrintPreview(false);
+    } catch (error) {
+      console.error("Error generating image:", error);
+      toast({
+        title: "Error",
+        description: "Failed to generate image. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
   
   let recipe;
@@ -259,6 +342,7 @@ const RecipeDetail = () => {
         </div>
       </div>
       
+      {/* Mobile Timer Controls */}
       <Sheet>
         <SheetTrigger asChild>
           <Button 
@@ -280,6 +364,40 @@ const RecipeDetail = () => {
           </div>
         </SheetContent>
       </Sheet>
+
+      {/* Print Preview Dialog */}
+      <Dialog open={showPrintPreview} onOpenChange={setShowPrintPreview}>
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+          <div className="p-4">
+            <div className="mb-6 flex justify-end space-x-4">
+              <Button onClick={downloadImage} className="bg-green-500 hover:bg-green-600">
+                Download as Image
+              </Button>
+              <Button onClick={generatePDF}>
+                Download as PDF
+              </Button>
+            </div>
+            
+            <div className="border rounded-lg shadow-lg overflow-hidden">
+              <PrintableRecipe
+                ref={printableRef}
+                title={recipe.title}
+                description={recipe.description}
+                image={recipe.image}
+                time={recipe.time}
+                cookTime={recipe.cookTime}
+                prepTime={recipe.prepTime}
+                difficulty={recipe.difficulty}
+                servings={recipe.servings}
+                chef={recipe.chef}
+                ingredients={recipe.ingredients as Ingredient[]}
+                steps={recipe.steps as Step[]}
+                nutrition={recipe.nutrition}
+              />
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

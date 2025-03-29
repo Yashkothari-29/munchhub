@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Search } from 'lucide-react';
@@ -7,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import RecipeCard from '@/components/RecipeCard';
 import RecipeFeatured from '@/components/RecipeFeatured';
 import CategorySection from '@/components/CategorySection';
+import BackgroundTexture from '@/components/BackgroundTexture';
 import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
@@ -20,7 +20,6 @@ const Index = () => {
     });
   };
   
-  // Mock data for recipes and categories
   const featuredRecipe = {
     id: 'shrimp-stir-fry',
     title: 'Garlic Butter Shrimp Stir Fry',
@@ -102,7 +101,9 @@ const Index = () => {
   ];
 
   return (
-    <div>
+    <div className="relative">
+      <BackgroundTexture />
+      
       {/* Hero Section */}
       <section className="relative">
         <div className="bg-gradient-to-r from-accent/10 to-primary/10 py-16 md:py-24">
